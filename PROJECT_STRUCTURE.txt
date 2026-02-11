@@ -1,0 +1,119 @@
+VENUE SCRAPER - PROJECT STRUCTURE
+==================================
+
+venue-scraper/
+│
+├── 📘 QUICKSTART.md              ← Start here!
+├── 📗 README.md                  ← Full documentation
+├── PROJECT_STRUCTURE.txt         ← This file
+│
+├── 🎯 MAIN SCRIPTS
+│   ├── venue_scraper.py          ← Main script to run
+│   ├── run_scheduler.py          ← Optional: automated scheduling
+│   └── test_demo.py              ← Test with mock data
+│
+├── ⚙️ CORE MODULES
+│   ├── database.py               ← SQLite database management
+│   └── venue_manager.py          ← Venue deduplication logic
+│
+├── 🌐 SCRAPERS
+│   └── scrapers/
+│       ├── __init__.py
+│       ├── bandsintown_scraper.py    ← Bandsintown API scraper
+│       └── songkick_scraper.py       ← Songkick web scraper
+│
+├── 📝 CONFIGURATION
+│   ├── config.json               ← Your artist list (edit this!)
+│   └── requirements.txt          ← Python dependencies
+│
+└── 📊 OUTPUT (created when you run)
+    ├── venues.db                 ← SQLite database
+    ├── venue_scraper.log         ← Detailed logs
+    ├── last_run_results.json     ← Last run statistics
+    └── venues_export.json        ← Exported venues (if you use --export)
+
+
+QUICK REFERENCE
+===============
+
+▶ First Time Setup
+------------------
+1. pip install requests beautifulsoup4
+2. Edit config.json with your artists
+3. python venue_scraper.py
+
+
+▶ Daily Use
+-----------
+python venue_scraper.py              # Run scraper
+python venue_scraper.py --export     # Run and export to JSON
+python test_demo.py                  # Test with mock data
+
+
+▶ Automation
+------------
+python run_scheduler.py              # Run on schedule (edit schedule first)
+
+Or use cron:
+0 2 * * * cd /path/to/venue-scraper && python venue_scraper.py
+
+
+▶ View Results
+--------------
+Python:
+  from database import VenueDatabase
+  db = VenueDatabase()
+  print(db.get_all_venues())
+
+SQLite:
+  sqlite3 venues.db "SELECT * FROM venues"
+
+JSON:
+  python venue_scraper.py --export
+  cat venues_export.json
+
+
+HOW IT WORKS
+============
+
+1. Reads config.json for artist list
+2. Queries Bandsintown & Songkick APIs
+3. Extracts venue information
+4. Compares against database (fuzzy matching)
+5. Adds new venues only
+6. Logs everything to venue_scraper.log
+
+
+CUSTOMIZATION
+=============
+
+Add more artists:
+  Edit config.json
+
+Add more scrapers:
+  Create new scraper in scrapers/
+  See README.md "Extending the Scraper"
+
+Change database location:
+  python venue_scraper.py --database /path/to/db
+
+Change schedule:
+  Edit run_scheduler.py schedule settings
+
+
+TROUBLESHOOTING
+===============
+
+No events found:
+  • Check artist name matches exactly
+  • Some artists may not have upcoming shows
+  • Check venue_scraper.log for details
+
+Duplicates appearing:
+  • Adjust similarity threshold in venue_manager.py
+  • Default is 0.85 (85% match required)
+
+Need help:
+  • Check venue_scraper.log
+  • Run python test_demo.py
+  • See README.md for full docs

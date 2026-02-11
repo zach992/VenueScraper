@@ -1,0 +1,37 @@
+{
+  "artists": [
+    "Esperanza Spalding",
+    "Tigran Hamasyan",
+    "Cimafunk",
+    "Herbie Hancock",
+    "Alfredo Rodriguez",
+    "Marcus Miller",
+    "ibrahim maalouf",
+    "Snarky Puppy",
+    "Brad Mehldau",
+    "Aaron Parks",
+    "Robert Glasper",
+    "Gerald Clayton",
+    "Gonzalo Rubalcaba",
+    "Christian McBride",
+    "Hiromi",
+    "Stanley Clarke",
+    "Kamasi Washington",
+    "Kneebody",
+    "Cory Henry",
+    "Nate Smith",
+    "BADBADNOTGOOD",
+    "Ambrose Akinmusire",
+    "Kurt Rosenwinkel",
+    "Lionel Loueke",
+    "Mark Guiliana",
+    "Antonio S\u00e1nchez",
+    "Miguel Zen\u00f3n"
+  ],
+  "scrapers_enabled": {
+    "songkick": true
+  },
+  "scraper_delays": {
+    "songkick": 2.0
+  }
+}
