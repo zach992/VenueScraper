@@ -7,6 +7,7 @@ import sqlite3
 from datetime import datetime
 from typing import Optional, Dict, List
 import os
+import time
 
 class VenueDatabase:
     def __init__(self, db_path: str = "venues.db"):
@@ -193,6 +194,135 @@ class VenueDatabase:
             LIMIT ?
         ''', (limit,)).fetchall()
         return [dict(venue) for venue in venues]
+
+    def get_upcoming_shows(self, limit: int = 100, artist_filter: str = None, country_filter: str = None) -> List[Dict]:
+        """Get upcoming shows with artist and venue info"""
+        cursor = self.conn.cursor()
+        query = '''
+            SELECT s.show_date, s.show_url, a.name AS artist_name,
+                   v.name AS venue_name, v.city, v.state, v.country, v.venue_url
+            FROM shows s
+            JOIN artists a ON s.artist_id = a.id
+            JOIN venues v ON s.venue_id = v.id
+            WHERE s.show_date >= date('now')
+        '''
+        params = []
+        if artist_filter:
+            query += ' AND a.name = ?'
+            params.append(artist_filter)
+        if country_filter:
+            query += ' AND v.country = ?'
+            params.append(country_filter)
+        query += ' ORDER BY s.show_date ASC LIMIT ?'
+        params.append(limit)
+        rows = cursor.execute(query, params).fetchall()
+        return [dict(row) for row in rows]
+
+    def get_all_shows(self) -> List[Dict]:
+        """Get all shows with artist and venue info"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('''
+            SELECT s.show_date, s.show_url, a.name AS artist_name,
+                   v.name AS venue_name, v.city, v.state, v.country, v.venue_url
+            FROM shows s
+            JOIN artists a ON s.artist_id = a.id
+            JOIN venues v ON s.venue_id = v.id
+            ORDER BY s.show_date DESC
+        ''').fetchall()
+        return [dict(row) for row in rows]
+
+    def get_shows_for_venue(self, venue_id: int) -> List[Dict]:
+        """Get all shows at a specific venue"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('''
+            SELECT s.show_date, s.show_url, a.name AS artist_name, s.source
+            FROM shows s
+            JOIN artists a ON s.artist_id = a.id
+            WHERE s.venue_id = ?
+            ORDER BY s.show_date ASC
+        ''', (venue_id,)).fetchall()
+        return [dict(row) for row in rows]
+
+    def get_venues_for_artist(self, artist_name: str) -> List[Dict]:
+        """Get all venues where an artist has shows"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('''
+            SELECT DISTINCT v.id, v.name, v.city, v.state, v.country, v.venue_url,
+                   s.show_date, s.show_url
+            FROM venues v
+            JOIN shows s ON v.id = s.venue_id
+            JOIN artists a ON s.artist_id = a.id
+            WHERE a.name = ?
+            ORDER BY s.show_date ASC
+        ''', (artist_name,)).fetchall()
+        return [dict(row) for row in rows]
+
+    def get_distinct_countries(self) -> List[str]:
+        """Get distinct countries from venues"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('SELECT DISTINCT country FROM venues WHERE country IS NOT NULL ORDER BY country').fetchall()
+        return [row[0] for row in rows]
+
+    def get_distinct_sources(self) -> List[str]:
+        """Get distinct sources from venues"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('SELECT DISTINCT source FROM venues WHERE source IS NOT NULL ORDER BY source').fetchall()
+        return [row[0] for row in rows]
+
+    def get_venues_with_coordinates(self) -> List[Dict]:
+        """Get venues that have lat/lon coordinates"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('''
+            SELECT * FROM venues
+            WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+            ORDER BY name
+        ''').fetchall()
+        return [dict(row) for row in rows]
+
+    def get_distinct_artists(self) -> List[str]:
+        """Get distinct artist names from the database"""
+        cursor = self.conn.cursor()
+        rows = cursor.execute('SELECT DISTINCT name FROM artists ORDER BY name').fetchall()
+        return [row[0] for row in rows]
+
+    def geocode_venues(self, progress_callback=None):
+        """Geocode venues that have no coordinates using geopy"""
+        try:
+            from geopy.geocoders import Nominatim
+            from geopy.exc import GeocoderTimedOut
+        except ImportError:
+            return {"error": "geopy not installed. Run: pip install geopy"}
+
+        geolocator = Nominatim(user_agent="venue_scraper")
+        cursor = self.conn.cursor()
+        rows = cursor.execute('''
+            SELECT id, name, city, state, country FROM venues
+            WHERE latitude IS NULL OR longitude IS NULL
+        ''').fetchall()
+
+        updated = 0
+        total = len(rows)
+        for i, row in enumerate(rows):
+            venue = dict(row)
+            query_parts = [p for p in [venue.get('city'), venue.get('state'), venue.get('country')] if p]
+            query = ", ".join(query_parts)
+            if not query:
+                continue
+            try:
+                location = geolocator.geocode(query, timeout=5)
+                if location:
+                    cursor.execute('''
+                        UPDATE venues SET latitude = ?, longitude = ? WHERE id = ?
+                    ''', (location.latitude, location.longitude, venue['id']))
+                    updated += 1
+            except (GeocoderTimedOut, Exception):
+                pass
+            if progress_callback:
+                progress_callback(i + 1, total)
+            time.sleep(1)  # Rate limit
+
+        self.conn.commit()
+        return {"updated": updated, "total": total}
 
     def close(self):
         """Close database connection"""

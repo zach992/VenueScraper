@@ -175,6 +175,7 @@ class SongkickImprovedScraper:
         """Parse event from JSON-LD structured data"""
         location = event_json.get('location', {})
         address = location.get('address', {})
+        geo = location.get('geo', {})
 
         return {
             'datetime': event_json.get('startDate'),
@@ -183,6 +184,8 @@ class SongkickImprovedScraper:
             'city': address.get('addressLocality', ''),
             'state': address.get('addressRegion', ''),
             'country': address.get('addressCountry', ''),
+            'latitude': geo.get('latitude'),
+            'longitude': geo.get('longitude'),
             'id': event_json.get('url', '').split('/')[-1] if event_json.get('url') else None
         }
 
@@ -304,8 +307,8 @@ class SongkickImprovedScraper:
             'city': event.get('city'),
             'state': event.get('state', ''),
             'country': event.get('country'),
-            'latitude': None,
-            'longitude': None,
+            'latitude': event.get('latitude'),
+            'longitude': event.get('longitude'),
             'address': '',
             'venue_url': event.get('url', ''),
             'source': 'songkick',
