@@ -1,52 +1,52 @@
 {
-  "start_time": "2026-02-10T22:05:14.474838",
-  "artists_processed": 6,
-  "total_new_venues": 0,
-  "total_new_shows": 121,
-  "total_events": 121,
+  "start_time": "2026-03-22T23:34:18.565551",
+  "artists_processed": 27,
+  "total_new_venues": 82,
+  "total_new_shows": 536,
+  "total_events": 536,
   "scrapers_used": [
     "songkick"
   ],
   "artist_details": {
     "Esperanza Spalding": {
-      "new_venues": 0,
-      "existing_venues": 22,
-      "new_shows": 22,
-      "total_events": 22,
+      "new_venues": 9,
+      "existing_venues": 9,
+      "new_shows": 18,
+      "total_events": 18,
       "sources": [
         "songkick"
       ]
     },
     "Tigran Hamasyan": {
-      "new_venues": 0,
-      "existing_venues": 23,
-      "new_shows": 23,
-      "total_events": 23,
+      "new_venues": 1,
+      "existing_venues": 14,
+      "new_shows": 15,
+      "total_events": 15,
       "sources": [
         "songkick"
       ]
     },
     "Cimafunk": {
-      "new_venues": 0,
-      "existing_venues": 12,
-      "new_shows": 12,
-      "total_events": 12,
+      "new_venues": 4,
+      "existing_venues": 15,
+      "new_shows": 19,
+      "total_events": 19,
       "sources": [
         "songkick"
       ]
     },
     "Herbie Hancock": {
-      "new_venues": 0,
-      "existing_venues": 21,
-      "new_shows": 21,
-      "total_events": 21,
+      "new_venues": 5,
+      "existing_venues": 22,
+      "new_shows": 27,
+      "total_events": 27,
       "sources": [
         "songkick"
       ]
     },
     "Alfredo Rodriguez": {
-      "new_venues": 0,
-      "existing_venues": 21,
+      "new_venues": 2,
+      "existing_venues": 19,
       "new_shows": 21,
       "total_events": 21,
       "sources": [
@@ -61,86 +61,275 @@
       "sources": [
         "songkick"
       ]
+    },
+    "ibrahim maalouf": {
+      "new_venues": 3,
+      "existing_venues": 19,
+      "new_shows": 22,
+      "total_events": 22,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Snarky Puppy": {
+      "new_venues": 0,
+      "existing_venues": 27,
+      "new_shows": 27,
+      "total_events": 27,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Brad Mehldau": {
+      "new_venues": 6,
+      "existing_venues": 17,
+      "new_shows": 23,
+      "total_events": 23,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Aaron Parks": {
+      "new_venues": 1,
+      "existing_venues": 16,
+      "new_shows": 17,
+      "total_events": 17,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Robert Glasper": {
+      "new_venues": 4,
+      "existing_venues": 14,
+      "new_shows": 18,
+      "total_events": 18,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Gerald Clayton": {
+      "new_venues": 2,
+      "existing_venues": 21,
+      "new_shows": 23,
+      "total_events": 23,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Gonzalo Rubalcaba": {
+      "new_venues": 0,
+      "existing_venues": 15,
+      "new_shows": 15,
+      "total_events": 15,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Christian McBride": {
+      "new_venues": 6,
+      "existing_venues": 19,
+      "new_shows": 25,
+      "total_events": 25,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Hiromi": {
+      "new_venues": 11,
+      "existing_venues": 15,
+      "new_shows": 26,
+      "total_events": 26,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Stanley Clarke": {
+      "new_venues": 0,
+      "existing_venues": 17,
+      "new_shows": 17,
+      "total_events": 17,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Kamasi Washington": {
+      "new_venues": 3,
+      "existing_venues": 15,
+      "new_shows": 18,
+      "total_events": 18,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Kneebody": {
+      "new_venues": 4,
+      "existing_venues": 14,
+      "new_shows": 18,
+      "total_events": 18,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Cory Henry": {
+      "new_venues": 5,
+      "existing_venues": 19,
+      "new_shows": 24,
+      "total_events": 24,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Nate Smith": {
+      "new_venues": 5,
+      "existing_venues": 14,
+      "new_shows": 19,
+      "total_events": 19,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "BADBADNOTGOOD": {
+      "new_venues": 2,
+      "existing_venues": 18,
+      "new_shows": 20,
+      "total_events": 20,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Ambrose Akinmusire": {
+      "new_venues": 2,
+      "existing_venues": 13,
+      "new_shows": 15,
+      "total_events": 15,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Kurt Rosenwinkel": {
+      "new_venues": 1,
+      "existing_venues": 19,
+      "new_shows": 20,
+      "total_events": 20,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Lionel Loueke": {
+      "new_venues": 1,
+      "existing_venues": 14,
+      "new_shows": 15,
+      "total_events": 15,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Mark Guiliana": {
+      "new_venues": 0,
+      "existing_venues": 12,
+      "new_shows": 12,
+      "total_events": 12,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Antonio S\u00e1nchez": {
+      "new_venues": 3,
+      "existing_venues": 20,
+      "new_shows": 23,
+      "total_events": 23,
+      "sources": [
+        "songkick"
+      ]
+    },
+    "Miguel Zen\u00f3n": {
+      "new_venues": 2,
+      "existing_venues": 15,
+      "new_shows": 17,
+      "total_events": 17,
+      "sources": [
+        "songkick"
+      ]
     }
   },
-  "end_time": "2026-02-10T22:05:31.086903",
+  "end_time": "2026-03-22T23:35:41.516386",
   "database_stats": {
-    "total_venues": 65,
+    "total_venues": 299,
     "recent_venues": [
       {
-        "id": 57,
-        "name": "TivoliVredenburg",
-        "city": "Utrecht",
-        "state": "",
-        "country": "Netherlands",
+        "id": 298,
+        "name": "The Appalachian Theatre",
+        "city": "Boone",
+        "state": "NC",
+        "country": "US",
         "latitude": null,
         "longitude": null,
         "address": "",
-        "venue_url": "https://www.songkick.com/concerts/42923940-metropole-orkest-at-tivolivredenburg?utm_medium=organic&utm_source=microformat",
+        "venue_url": "https://www.songkick.com/concerts/43041025-miguel-zenon-at-appalachian-theatre?utm_medium=organic&utm_source=microformat",
         "source": "songkick",
-        "external_id": "songkick_42923940-metropole-orkest-at-tivolivredenburg?utm_medium=organic&utm_source=microformat",
-        "created_at": "2026-02-11 03:04:48",
-        "updated_at": "2026-02-11 03:04:48"
+        "external_id": "songkick_43041025-miguel-zenon-at-appalachian-theatre?utm_medium=organic&utm_source=microformat",
+        "created_at": "2026-03-23 03:35:41",
+        "updated_at": "2026-03-23 03:35:41"
       },
       {
-        "id": 58,
-        "name": "Doubletree By Hilton Reading",
-        "city": "Reading",
+        "id": 299,
+        "name": "The Appalachian Theatre",
+        "city": null,
+        "state": "",
+        "country": null,
+        "latitude": null,
+        "longitude": null,
+        "address": "",
+        "venue_url": "https://www.songkick.com/concerts/43041025-miguel-zenon-at-appalachian-theatre",
+        "source": "songkick",
+        "external_id": "songkick_43041025-miguel-zenon-at-appalachian-theatre",
+        "created_at": "2026-03-23 03:35:41",
+        "updated_at": "2026-03-23 03:35:41"
+      },
+      {
+        "id": 295,
+        "name": "Concerts Under The Stars",
+        "city": "King Of Prussia",
         "state": "PA",
         "country": "US",
         "latitude": null,
         "longitude": null,
         "address": "",
-        "venue_url": "https://www.songkick.com/concerts/42904877-marcus-miller-at-doubletree-by-hilton-reading?utm_medium=organic&utm_source=microformat",
+        "venue_url": "https://www.songkick.com/concerts/43090763-bela-fleck-at-concerts-under-the-stars?utm_medium=organic&utm_source=microformat",
         "source": "songkick",
-        "external_id": "songkick_42904877-marcus-miller-at-doubletree-by-hilton-reading?utm_medium=organic&utm_source=microformat",
-        "created_at": "2026-02-11 03:04:48",
-        "updated_at": "2026-02-11 03:04:48"
+        "external_id": "songkick_43090763-bela-fleck-at-concerts-under-the-stars?utm_medium=organic&utm_source=microformat",
+        "created_at": "2026-03-23 03:35:38",
+        "updated_at": "2026-03-23 03:35:38"
       },
       {
-        "id": 59,
-        "name": "Rams Head On Stage",
-        "city": "Annapolis",
-        "state": "MD",
+        "id": 296,
+        "name": "The Historic Theater at the Music Hall",
+        "city": "Portsmouth",
+        "state": "NH",
         "country": "US",
         "latitude": null,
         "longitude": null,
         "address": "",
-        "venue_url": "https://www.songkick.com/concerts/42860967-marcus-miller-at-rams-head-on-stage?utm_medium=organic&utm_source=microformat",
+        "venue_url": "https://www.songkick.com/concerts/43090777-bela-fleck-at-historic-theater-at-the-music-hall?utm_medium=organic&utm_source=microformat",
         "source": "songkick",
-        "external_id": "songkick_42860967-marcus-miller-at-rams-head-on-stage?utm_medium=organic&utm_source=microformat",
-        "created_at": "2026-02-11 03:04:48",
-        "updated_at": "2026-02-11 03:04:48"
+        "external_id": "songkick_43090777-bela-fleck-at-historic-theater-at-the-music-hall?utm_medium=organic&utm_source=microformat",
+        "created_at": "2026-03-23 03:35:38",
+        "updated_at": "2026-03-23 03:35:38"
       },
       {
-        "id": 60,
-        "name": "Maison Symphonique",
-        "city": "Montreal",
-        "state": "QC",
-        "country": "Canada",
-        "latitude": null,
-        "longitude": null,
-        "address": "",
-        "venue_url": "https://www.songkick.com/concerts/42860133-marcus-miller-at-maison-symphonique?utm_medium=organic&utm_source=microformat",
-        "source": "songkick",
-        "external_id": "songkick_42860133-marcus-miller-at-maison-symphonique?utm_medium=organic&utm_source=microformat",
-        "created_at": "2026-02-11 03:04:48",
-        "updated_at": "2026-02-11 03:04:48"
-      },
-      {
-        "id": 61,
-        "name": "Th\u00e9\u00e2tre Antique de Vienne",
-        "city": "Vienne",
+        "id": 297,
+        "name": "The Historic Theater at the Music Hall",
+        "city": null,
         "state": "",
-        "country": "France",
+        "country": null,
         "latitude": null,
         "longitude": null,
         "address": "",
-        "venue_url": "https://www.songkick.com/concerts/42909483-marcus-miller-at-theatre-antique-de-vienne?utm_medium=organic&utm_source=microformat",
+        "venue_url": "https://www.songkick.com/concerts/43090777-bela-fleck-at-historic-theater-at-the-music-hall",
         "source": "songkick",
-        "external_id": "songkick_42909483-marcus-miller-at-theatre-antique-de-vienne?utm_medium=organic&utm_source=microformat",
-        "created_at": "2026-02-11 03:04:48",
-        "updated_at": "2026-02-11 03:04:48"
+        "external_id": "songkick_43090777-bela-fleck-at-historic-theater-at-the-music-hall",
+        "created_at": "2026-03-23 03:35:38",
+        "updated_at": "2026-03-23 03:35:38"
       }
     ]
   }

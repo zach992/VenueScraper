@@ -68,20 +68,29 @@ class SongkickImprovedScraper:
                 soup = BeautifulSoup(response.content, 'html.parser')
 
                 # Try multiple possible selectors
-                artist_link = (
-                    soup.select_one('li.artist a[href*="/artists/"]') or
-                    soup.select_one('a[href*="/artists/"]') or
-                    soup.select_one('[data-testid*="artist"] a')
+                artist_links = (
+                    soup.select('li.artist a[href*="/artists/"]') or
+                    soup.select('a[href*="/artists/"]')
                 )
 
-                if artist_link:
+                # Verify the result actually matches the search query
+                query_lower = artist_name.lower()
+                for artist_link in artist_links:
+                    link_text = artist_link.get_text(strip=True).lower()
                     href = artist_link.get('href', '')
-                    if href.startswith('/'):
-                        url = self.BASE_URL + href
-                    else:
-                        url = href
-                    logger.info(f"Found artist via search: {url}")
-                    return url
+                    # Check if link text or URL slug matches the query
+                    slug_from_href = href.split('/')[-1].replace('-', ' ') if '/artists/' in href else ''
+                    # Remove numeric prefix from slug (e.g., "29793-snarky-puppy" -> "snarky puppy")
+                    slug_from_href = re.sub(r'^\d+-', '', slug_from_href)
+
+                    if (query_lower in link_text or link_text in query_lower or
+                            query_lower in slug_from_href or slug_from_href in query_lower):
+                        if href.startswith('/'):
+                            url = self.BASE_URL + href
+                        else:
+                            url = href
+                        logger.info(f"Found artist via search: {url}")
+                        return url
         except Exception as e:
             logger.error(f"Error searching for {artist_name}: {e}")
 
@@ -322,11 +331,22 @@ class SongkickImprovedScraper:
         Returns:
             Dictionary with show information
         """
+        url = event.get('url', '')
+        is_festival = '/festivals/' in url
+        festival_name = ''
+        if is_festival:
+            # Extract festival name from URL like /festivals/1048-big-ears/
+            match = re.search(r'/festivals/\d+-([^/]+)', url)
+            if match:
+                festival_name = match.group(1).replace('-', ' ').title()
+
         return {
             'show_date': event.get('datetime'),
-            'show_url': event.get('url'),
+            'show_url': url,
             'source': 'songkick',
-            'external_id': event.get('id')
+            'external_id': event.get('id'),
+            'is_festival': is_festival,
+            'festival_name': festival_name
         }
 
     def scrape_artist(self, artist_name: str) -> List[tuple[Dict, Dict]]:

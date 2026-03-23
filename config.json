@@ -26,12 +26,16 @@
     "Lionel Loueke",
     "Mark Guiliana",
     "Antonio S\u00e1nchez",
-    "Miguel Zen\u00f3n"
+    "Miguel Zen\u00f3n",
+    "Thundercat",
+    "Joey Alexander"
   ],
   "scrapers_enabled": {
-    "songkick": true
+    "songkick": true,
+    "setlistfm": true
   },
   "scraper_delays": {
-    "songkick": 2.0
+    "songkick": 2.0,
+    "setlistfm": 1.5
   }
 }

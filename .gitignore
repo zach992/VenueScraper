@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.playwright-screenshots/
+.playwright-mcp/
+venues.db
+venue_scraper.log
+last_run_results.json
+venues_export.json

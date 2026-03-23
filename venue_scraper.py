@@ -14,6 +14,7 @@ from typing import List, Dict
 from database import VenueDatabase
 from venue_manager import VenueManager
 from scrapers.songkick_improved_scraper import SongkickImprovedScraper
+from scrapers.setlistfm_scraper import SetlistfmScraper
 
 # Setup logging
 logging.basicConfig(
@@ -48,7 +49,8 @@ class VenueScraper:
 
         # Initialize scrapers
         self.scrapers = {
-            'songkick': SongkickImprovedScraper()
+            'songkick': SongkickImprovedScraper(),
+            'setlistfm': SetlistfmScraper()
         }
 
     def load_config(self) -> Dict:
@@ -72,18 +74,14 @@ class VenueScraper:
     def get_default_config(self) -> Dict:
         """Get default configuration"""
         return {
-            "artists": [
-                "Radiohead",
-                "The National",
-                "Arcade Fire"
-            ],
+            "artists": [],
             "scrapers_enabled": {
-                "bandsintown": True,
-                "songkick": True
+                "songkick": True,
+                "setlistfm": True
             },
             "scraper_delays": {
-                "bandsintown": 1.0,
-                "songkick": 2.0
+                "songkick": 2.0,
+                "setlistfm": 1.5
             }
         }
 

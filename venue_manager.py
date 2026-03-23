@@ -55,15 +55,24 @@ class VenueManager:
         def safe_lower(value):
             return (value or '').lower() if value else ''
 
+        new_name = safe_lower(new_venue.get('name'))
+        existing_name = safe_lower(existing_venue.get('name'))
+        new_city = safe_lower(new_venue.get('city'))
+        existing_city = safe_lower(existing_venue.get('city'))
+        new_country = safe_lower(new_venue.get('country'))
+        existing_country = safe_lower(existing_venue.get('country'))
+
+        # If either venue has no city, match on name alone (with high threshold)
+        if not new_city or not existing_city or new_city == 'none' or existing_city == 'none':
+            if new_name and existing_name and new_name == existing_name:
+                return True
+
         # Exact match on name, city, and country
-        if (safe_lower(new_venue.get('name')) == safe_lower(existing_venue.get('name')) and
-            safe_lower(new_venue.get('city')) == safe_lower(existing_venue.get('city')) and
-            safe_lower(new_venue.get('country')) == safe_lower(existing_venue.get('country'))):
+        if (new_name == existing_name and new_city == existing_city and new_country == existing_country):
             return True
 
         # Fuzzy match on name if in same city/country
-        if (safe_lower(new_venue.get('city')) == safe_lower(existing_venue.get('city')) and
-            safe_lower(new_venue.get('country')) == safe_lower(existing_venue.get('country'))):
+        if (new_city == existing_city and new_country == existing_country):
 
             name_similarity = self.similarity_score(
                 new_venue.get('name', ''),
@@ -90,20 +99,30 @@ class VenueManager:
 
     def find_duplicate_in_db(self, venue_data: Dict) -> Optional[int]:
         """
-        Search database for potential duplicate venues
-
-        Args:
-            venue_data: Venue information to check
-
-        Returns:
-            Venue ID if duplicate found, None otherwise
+        Search database for potential duplicate venues.
+        Uses two-tier lookup: exact SQL match first, then scoped fuzzy match.
         """
-        # Get all venues (could be optimized with city/country filter for large DBs)
-        all_venues = self.db.get_all_venues()
+        name = venue_data.get('name', '')
+        city = venue_data.get('city', '')
+        country = venue_data.get('country', '')
 
-        for existing_venue in all_venues:
-            if self.is_duplicate_venue(venue_data, existing_venue):
-                return existing_venue['id']
+        # Step 1: Exact match via SQL (handles ~90% of cases, uses UNIQUE index)
+        exact = self.db.get_venue_by_exact_match(name, city, country)
+        if exact:
+            return exact['id']
+
+        # Step 2: Fuzzy match against same-city venues only
+        if city and city.lower() not in ('', 'none'):
+            same_city = self.db.get_venues_by_city_country(city, country)
+            for existing in same_city:
+                if self.is_duplicate_venue(venue_data, existing):
+                    return existing['id']
+
+        # Step 3: Check city-less venues (name-only match)
+        no_city = self.db.get_venues_with_no_city()
+        for existing in no_city:
+            if self.is_duplicate_venue(venue_data, existing):
+                return existing['id']
 
         return None
 
