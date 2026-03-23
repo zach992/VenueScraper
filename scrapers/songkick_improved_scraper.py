@@ -381,6 +381,40 @@ class SongkickImprovedScraper:
         return results
 
 
+    def get_related_artists(self, artist_name: str) -> List[str]:
+        """
+        Get related/similar artists from an artist's Songkick page.
+        Returns list of artist name strings.
+        """
+        artist_url = self.search_artist(artist_name)
+        if not artist_url:
+            return []
+
+        try:
+            response = self.session.get(artist_url, timeout=15)
+            if response.status_code != 200:
+                return []
+
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            # Find the "Related artists" section
+            related_section = soup.select_one('div.related-artists-v2')
+            if not related_section:
+                return []
+
+            # Extract artist names
+            name_elements = related_section.select('div.related-artists-v2__artist-name')
+            names = [el.get_text(strip=True) for el in name_elements if el.get_text(strip=True)]
+
+            logger.info(f"Found {len(names)} related artists for {artist_name}")
+            time.sleep(1.0)
+            return names
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error getting related artists for {artist_name}: {e}")
+            return []
+
+
 if __name__ == "__main__":
     # Test the scraper
     scraper = SongkickImprovedScraper()

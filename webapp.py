@@ -38,6 +38,10 @@ st.markdown("""
     /* ── Hide Streamlit chrome ─────────────────────── */
     #MainMenu, footer, header { visibility: hidden; }
     .block-container { padding-top: 2rem; padding-bottom: 1rem; }
+    /* Disable sidebar collapse button */
+    button[kind="headerNoPadding"] { display: none !important; }
+    [data-testid="stSidebarCollapseButton"] { display: none !important; }
+    [data-testid="collapsedControl"] { display: none !important; }
 
     /* ── App title ─────────────────────────────────── */
     .app-title {
@@ -180,15 +184,26 @@ st.markdown("""
     /* ── Remove artist buttons ──────────────────────── */
     section[data-testid="stSidebar"] [data-testid="stExpander"] .stButton > button {
         background: transparent !important;
-        border: none !important;
-        color: #555 !important;
-        font-size: 0.85rem !important;
-        padding: 0.2rem 0.4rem !important;
+        border: 1px solid #333 !important;
+        color: #666 !important;
+        font-size: 0.65rem !important;
+        padding: 0.15rem 0.5rem !important;
         min-height: 0 !important;
-        line-height: 1 !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.5px !important;
+        text-transform: lowercase !important;
+        border-radius: 3px !important;
     }
     section[data-testid="stSidebar"] [data-testid="stExpander"] .stButton > button:hover {
         color: #e85555 !important;
+        border-color: #e85555 !important;
+    }
+
+    /* ── Suggestion add buttons ─────────────────────── */
+    section[data-testid="stSidebar"] button[kind="secondary"] {
+        font-size: 0.75rem !important;
+        padding: 0.2rem 0.6rem !important;
+        min-height: 0 !important;
     }
 
     /* ── Divider ───────────────────────────────────── */
@@ -408,11 +423,11 @@ with st.sidebar:
         st.markdown(f'<div class="artist-count">{len(current_artists)} artists tracked</div>', unsafe_allow_html=True)
         with st.expander("Manage artists", expanded=False):
             for artist in current_artists:
-                col1, col2 = st.columns([6, 1])
+                col1, col2 = st.columns([4, 1])
                 with col1:
                     st.markdown(f'<div class="artist-item">{artist}</div>', unsafe_allow_html=True)
                 with col2:
-                    if st.button("🗑", key=f"rm_{artist}", help=f"Remove {artist}"):
+                    if st.button("x", key=f"rm_{artist}", help=f"Remove {artist}"):
                         current_artists.remove(artist)
                         config['artists'] = current_artists
                         save_config(config)
@@ -450,6 +465,61 @@ with st.sidebar:
             mime="text/csv",
             use_container_width=True
         )
+
+    # Discover section
+    if current_artists:
+        st.divider()
+        st.header("DISCOVER")
+
+        if 'suggestions' not in st.session_state:
+            st.session_state.suggestions = None
+
+        if st.button("Find Similar Artists", use_container_width=True):
+            import random
+            with st.spinner("Scanning for similar artists..."):
+                scraper = SongkickImprovedScraper()
+                all_related = {}
+
+                # Sample up to 10 artists to keep it fast
+                sample = current_artists if len(current_artists) <= 10 else random.sample(current_artists, 10)
+                for artist in sample:
+                    related = scraper.get_related_artists(artist)
+                    for name in related:
+                        if name.lower() not in [a.lower() for a in current_artists]:
+                            if name not in all_related:
+                                all_related[name] = []
+                            all_related[name].append(artist)
+
+                # Sort by how many tracked artists suggest them
+                sorted_suggestions = sorted(all_related.items(), key=lambda x: len(x[1]), reverse=True)
+                st.session_state.suggestions = sorted_suggestions[:15]
+
+        if st.session_state.suggestions:
+            for name, sources in st.session_state.suggestions:
+                col1, col2 = st.columns([5, 2])
+                with col1:
+                    source_count = len(sources)
+                    st.markdown(
+                        f'<div class="artist-item">{name} '
+                        f'<span style="color:#888;font-size:0.7rem;">({source_count} match{"es" if source_count > 1 else ""})</span>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+                with col2:
+                    if st.button("+ Add", key=f"suggest_{name}"):
+                        with st.spinner(f"Verifying..."):
+                            validation = validate_artist(name)
+                        if any(v['found'] for v in validation):
+                            current_artists.append(name)
+                            config['artists'] = current_artists
+                            save_config(config)
+                            # Remove from suggestions
+                            st.session_state.suggestions = [
+                                (n, s) for n, s in st.session_state.suggestions if n != name
+                            ]
+                            st.rerun()
+                        else:
+                            st.error(f"Could not verify '{name}'")
 
 
 # =============================================================================
